@@ -1,9 +1,8 @@
 <template>
     <div class="form-group">
         <!--<i class="fa fa-eye fa-2x" aria-hidden="true"></i>-->
-        <span class="show-hide" v-on:click="toggleClass"><i class="fa fa-eye fa-2x" aria-hidden="true"></i></span>
-        <input type="text" placeholder="password" class="form-control form-control-lg"></input>
-        <div v-bind:class="{ 'active': isActive }">xx</div>
+        <span class="show-hide" v-on:click="toggleClass"><i class="fa fa-2x" v-bind:class="{'fa-eye' : isActive, 'fa-eye-slash' : !isActive}" aria-hidden="true"></i></span>
+        <input type="password" placeholder="password" class="form-control form-control-lg" id="passord-input" ></input>
     </div>
     
 </template>
@@ -14,15 +13,27 @@ export default{
     data() {
         return{
             isHidden: 'text',
-            isActive: true
+            isActive: true,
+            _password:''
         }
        
     },
     methods:{
         toggleClass:function(event){
-            this.isActive = false;
-            alert('toggle');
-            console.log(this);
+            if(this.isActive){
+                this.isActive = false;
+                document.getElementById('passord-input').type = 'text';
+            }else{
+                this.isActive = true;
+                 document.getElementById('passord-input').type = 'password';
+            }
+        }
+    },
+    //property depends on another
+    computed:{
+        value(){
+            console.log(this._password);
+            return this._password;
         }
     }
 }

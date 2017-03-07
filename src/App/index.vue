@@ -4,13 +4,15 @@
     <div class="row justify-content-md-center">
         <div class="col col-lg-6">
             <div class="jumbotron">
+            <form v-on:submit.prevent="onSubmit">
                 <password-input></password-input>
-                <textbox></textbox>
+                <textbox :username="username"></textbox>
                 <div class="form-group">
                      <div class="offset-sm-8 col-sm-4">
                         <button type="submit" class="btn btn-primary" style="float:right;">Sign in</button>
                     </div>
                 </div>
+                </form>
             </div>
         </div>
     </div>
@@ -27,7 +29,15 @@ export default{
         'textbox': Input
     },
     data(){
-        return{}
+        return{
+            //  mutableCopy: this.immutableProp
+            username:''
+        }
+    },
+    methods:{
+       onSubmit(event){
+           console.log(this.username);
+       }
     }
 }
 </script>

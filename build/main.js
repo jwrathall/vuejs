@@ -6704,6 +6704,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
 
 exports.default = {
     name: 'App',
@@ -6712,7 +6714,16 @@ exports.default = {
         'textbox': _textboxComponent2.default
     },
     data: function data() {
-        return {};
+        return {
+            //  mutableCopy: this.immutableProp
+            username: ''
+        };
+    },
+
+    methods: {
+        onSubmit: function onSubmit(event) {
+            console.log(this.username);
+        }
     }
 };
 
@@ -6735,22 +6746,33 @@ Object.defineProperty(exports, "__esModule", {
 //
 //
 //
-//
 
 exports.default = {
     name: 'Password',
     data: function data() {
         return {
             isHidden: 'text',
-            isActive: true
+            isActive: true,
+            _password: ''
         };
     },
 
     methods: {
         toggleClass: function toggleClass(event) {
-            this.isActive = false;
-            alert('toggle');
-            console.log(this);
+            if (this.isActive) {
+                this.isActive = false;
+                document.getElementById('passord-input').type = 'text';
+            } else {
+                this.isActive = true;
+                document.getElementById('passord-input').type = 'password';
+            }
+        }
+    },
+    //property depends on another
+    computed: {
+        value: function value() {
+            console.log(this._password);
+            return this._password;
         }
     }
 };
@@ -6771,11 +6793,29 @@ Object.defineProperty(exports, "__esModule", {
 //
 //
 //
+//
 
 exports.default = {
     name: 'Username',
+    props: {
+        username: {
+            type: String,
+            required: true
+        }
+    },
     data: function data() {
-        return {};
+        return {
+            xusername: this._username
+        };
+    },
+
+    computed: {
+        _username: function _username(username) {
+            // var _username = this.username;
+            // console.log(this.username);
+            console.log(username);
+            return username + "comp";
+        }
     }
 };
 
@@ -7094,7 +7134,18 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "col col-lg-6"
   }, [_c('div', {
     staticClass: "jumbotron"
-  }, [_c('password-input'), _vm._v(" "), _c('textbox'), _vm._v(" "), _vm._m(0)], 1)])])
+  }, [_c('form', {
+    on: {
+      "submit": function($event) {
+        $event.preventDefault();
+        _vm.onSubmit($event)
+      }
+    }
+  }, [_c('password-input'), _vm._v(" "), _c('textbox', {
+    attrs: {
+      "username": _vm.username
+    }
+  }), _vm._v(" "), _vm._m(0)], 1)])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "form-group"
@@ -7123,18 +7174,31 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _vm._m(0)
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "form-group"
   }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm._username),
+      expression: "_username"
+    }],
     staticClass: "form-control form-control-lg",
     attrs: {
       "type": "text",
       "placeholder": "username"
+    },
+    domProps: {
+      "value": _vm._s(_vm._username)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm._username = $event.target.value
+      }
     }
-  })])
-}]}
+  }), _vm._v(_vm._s(_vm._username))])
+},staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -7156,21 +7220,21 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "click": _vm.toggleClass
     }
   }, [_c('i', {
-    staticClass: "fa fa-eye fa-2x",
+    staticClass: "fa fa-2x",
+    class: {
+      'fa-eye': _vm.isActive, 'fa-eye-slash': !_vm.isActive
+    },
     attrs: {
       "aria-hidden": "true"
     }
   })]), _vm._v(" "), _c('input', {
     staticClass: "form-control form-control-lg",
     attrs: {
-      "type": "text",
-      "placeholder": "password"
+      "type": "password",
+      "placeholder": "password",
+      "id": "passord-input"
     }
-  }), _vm._v(" "), _c('div', {
-    class: {
-      'active': _vm.isActive
-    }
-  }, [_vm._v("xx")])])
+  })])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
